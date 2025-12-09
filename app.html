@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Snowboarder Flappy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --sky:#bfe9ff; --snow:#ffffff; --pine:#1e5631; --ui:#2c3e50; }
+  body { margin:0; background:linear-gradient(#cfefff,#eaf6ff); font-family:system-ui, Arial, sans-serif; color:var(--ui); }
+  #hud { text-align:center; padding:10px; font-weight:600; }
+  canvas { display:block; margin:0 auto; background:#eaf6ff; box-shadow:0 8px 24px rgba(0,0,0,0.15); border-radius:8px; }
+  #msg { text-align:center; font-size:14px; opacity:0.8; margin:8px 0 12px; }
+</style>
+</head>
+<body>
+<div id="hud">Score: <span id="score">0</span> | Best: <span id="best">0</span></div>
+<div id="msg">Press Space or Arrow Up to jump. Avoid trees. Pass gaps to score.</div>
+<canvas id="game" width="480" height="640"></canvas>
+
+<script>
+(function(){
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+
+  // Game state
+  let running = false;
+  let last = 0;
+  let score = 0;
+  let best = Number(localStorage.getItem('sb_best') || 0);
+
+  // Player
+  const S = {
+    x: 90, y: canvas.height/2,
+    w: 36, h: 26,
+    vy: 0
+  };
+
+  // Obstacles (trees)
+  let obs = [];
+  const GAP_MIN = 180;
+  const GAP_MAX = 240;
+  const SPEED = 180; // px/s
+  const GRAV = 900;  // px/s^2
+  const JUMP = -380; // px/s impulse
+
+  bestEl.textContent = best;
+
+  function resetGame(){
+    score = 0;
+    scoreEl.textContent = score;
+    S.x = 90; S.y = canvas.height/2; S.vy = 0;
+    obs = [];
+    // Spawn initial trees
+    let x = canvas.width + 100;
+    for (let i=0;i<5;i++) {
+      obs.push(makeObstacle(x));
+      x += 260;
+    }
+  }
+
+  function startGame(){
+    resetGame();
+    running = true;
+    last = performance.now();
+    requestAnimationFrame(loop);
+  }
+
+  function makeObstacle(x){
+    const gap = GAP_MIN + Math.random()*(GAP_MAX - GAP_MIN);
+    const topH = 60 + Math.random()*(canvas.height - gap - 140); // keep reasonable margins
+    return { x, w: 60, top: topH, gap: gap, scored: false };
+  }
+
+  function loop(ts){
+    if (!running) { draw(); return; }
+    const dt = Math.min(0.033, (ts - last)/1000); // clamp dt to avoid big jumps
+    last = ts;
+    update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function update(dt){
+    // Physics
+    S.vy += GRAV * dt;
+    S.y += S.vy * dt;
+
+    // Bounds clamp
+    if (S.y < 0) { S.y = 0; S.vy = 0; }
+    if (S.y + S.h > canvas.height) { S.y = canvas.height - S.h; endGame(); }
+
+    // Move obstacles
+    obs.forEach(o => o.x -= SPEED * dt);
+
+    // Spawn next
+    const lastX = obs.length ? obs[obs.length-1].x : canvas.width;
+    if (lastX < canvas.width - 220) {
+      obs.push(makeObstacle(Math.max(canvas.width, lastX + 240)));
+    }
+
+    // Remove offscreen
+    obs = obs.filter(o => o.x + o.w > -10);
+
+    // Scoring and collision
+    obs.forEach(o => {
+      // Score when player passes center of obstacle
+      if (!o.scored && S.x > o.x + o.w) {
+        o.scored = true;
+        score++;
+        scoreEl.textContent = score;
+      }
+
+      // Collision: player rect vs top/bottom rects
+      const px = S.x, py = S.y, pw = S.w, ph = S.h;
+
+      const topRect = { x: o.x, y: 0, w: o.w, h: o.top };
+      const botRect = { x: o.x, y: o.top + o.gap, w: o.w, h: canvas.height - (o.top + o.gap) };
+
+      if (rectRect(px, py, pw, ph, topRect.x, topRect.y, topRect.w, topRect.h) ||
+          rectRect(px, py, pw, ph, botRect.x, botRect.y, botRect.w, botRect.h)) {
+        endGame();
+      }
+    });
+  }
+
+  function rectRect(ax, ay, aw, ah, bx, by, bw, bh){
+    return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+  }
+
+  function endGame(){
+    running = false;
+    if (score > best) {
+      best = score;
+      localStorage.setItem('sb_best', String(best));
+      bestEl.textContent = best;
+    }
+    drawOverlay('Game Over', 'Press Space to restart');
+  }
+
+  // Drawing
+  function draw(){
+    // Clear
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Background snow ground
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, canvas.height - 80, canvas.width, 80);
+
+    // Draw obstacles as trees
+    obs.forEach(o => drawTrees(o));
+
+    // Draw snowboarder
+    drawRider(S);
+
+    if (!running) {
+      drawOverlay('Ready', 'Press Space to start');
+    }
+  }
+
+  function drawTrees(o){
+    ctx.fillStyle = '#1e5631';
+    // Top tree (rect)
+    ctx.fillRect(o.x, 0, o.w, o.top);
+    // Bottom tree (rect)
+    ctx.fillRect(o.x, o.top + o.gap, o.w, canvas.height - (o.top + o.gap));
+
+    // Add simple snow highlights
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fillRect(o.x+6, o.top-8, o.w-12, 6);
+    ctx.fillRect(o.x+6, o.top + o.gap + 6, o.w-12, 6);
+  }
+
+  function drawRider(s){
+    // Board
+    ctx.fillStyle = '#d32f2f';
+    ctx.fillRect(s.x, s.y + s.h - 6, s.w, 6);
+    // Body
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(s.x + 8, s.y + 2, s.w - 16, s.h - 10);
+    // Head (helmet)
+    ctx.fillStyle = '#0ea5e9';
+    ctx.beginPath();
+    ctx.arc(s.x + s.w/2, s.y + 6, 7, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  function drawOverlay(title, subtitle){
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 28px system-ui';
+    ctx.fillText(title, canvas.width/2, canvas.height/2 - 12);
+    ctx.font = '16px system-ui';
+    ctx.fillText(subtitle, canvas.width/2, canvas.height/2 + 18);
+  }
+
+  // Controls
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' || e.code === 'ArrowUp') {
+      if (!running) startGame();
+      else S.vy = JUMP;
+    }
+  });
+
+  // Initial draw
+  resetGame();
+  draw();
+})();
+</script>
+</body>
+</html>
+
+
+
