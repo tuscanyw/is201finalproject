@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tuscany Williams — Résumé</title>
+
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --white: #ffffff;
+      --light-gray: #eef1f5;
+      --text-dark: #2b2b2b;
+      --text-muted: #6d6d6d;
+      --accent: #2b6cb0;
+      --accent-light: #63b3ed;
+      --radius: 14px;
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-dark);
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      padding: 30px;
+      background: var(--light-gray);
+      border-right: 1px solid #d8dce0;
+    }
+
+    .photo {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .title {
+      margin: 6px 0 16px;
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .contact p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .section h3 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .skill {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .bar {
+      width: 60%;
+      height: 8px;
+      background: #d4dae0;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-left: 12px;
+    }
+
+    .bar i {
+      height: 100%;
+      display: block;
+      background: var(--accent-light);
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      padding: 30px;
+      background: var(--white);
+    }
+
+    .main h1 {
+      font-size: 28px;
+      margin-top: 0;
+      color: var(--accent);
+    }
+
+    .summary {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .cards {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--light-gray);
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 1px solid #dfe3e8;
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .job {
+      margin-bottom: 20px;
+    }
+
+    .job h4 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 4px 0 10px;
+    }
+
+    .job ul {
+      margin: 0 0 0 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 880px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #d8dce0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="photo">
+      <img src="img/tuscany.JPG" alt="Photo of Tuscany Williams">
+    </div>
+
+    <h2 class="name">Tuscany Williams</h2>
+    <p class="title">Business Student</p>
+
+    <div class="contact">
+      <p><strong>Location:</strong> Provo, UT</p>
+      <p><strong>Email:</strong> <a href="mailto:tuscany.williams@gmail.com">tuscany.williams@gmail.com</a></p>
+      <p><strong>Phone:</strong> +1 (801) 376-1963</p>
+    </div>
+
+    <div class="section">
+      <h3>Skills</h3>
+      <div class="skill-list">
+        <div class="skill">Customer Service<div class="bar"><i style="width:95%"></i></div></div>
+        <div class="skill">Communication<div class="bar"><i style="width:88%"></i></div></div>
+        <div class="skill">Typing<div class="bar"><i style="width:85%"></i></div></div>
+        <div class="skill">Sales<div class="bar"><i style="width:75%"></i></div></div>
+        <div class="skill">Food Service<div class="bar"><i style="width:80%"></i></div></div>
+        <div class="skill">Attention to Detail<div class="bar"><i style="width:90%"></i></div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Languages</h3>
+      <ul class="list">
+        <li>English — Native</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Certifications</h3>
+      <ul class="list">
+        <li>Driver’s License
+        <li>Direct Support Specialist</li>
+        <li>First Aid Certified</li>
+        <li>Food Handlers Permit</li>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <section class="main">
+    <h1>Résumé</h1>
+
+    <p class="summary">
+      I have strong customer service experience, excellent communication abilities, and a passion
+      for helping others. I served a full-time mission, which strengthened my leadership, people
+      skills, and ability to work under pressure. I enjoy technology and problem-solving, and I am
+      currently studying business at BYU.
+    </p>
+
+    <div class="cards">
+
+      <!-- WORK EXPERIENCE -->
+      <div class="card">
+        <h3>Work Experience</h3>
+
+        <div class="job">
+          <h4>Direct Support Specialist — Rise Services, Inc.</h4>
+          <div class="meta">Utah • Aug 2025 – Present</div>
+          <ul>
+            <li>Support individuals with disabilities in building independence and daily life skills.</li>
+            <li>Help clients work toward goals related to communication, social development, and personal growth.</li>
+            <li>Provide companionship, structure, and emotional support in a positive and inclusive environment.</li>
+            <li>Document progress and ensure goals are met according to individualized support plans.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <h4>Front End Cashier — Walmart</h4>
+          <div class="meta">American Fork, UT • Nov 2021 – Nov 2023</div>
+          <ul>
+            <li>Assisted customers at checkout with friendly, efficient service.</li>
+            <li>Handled returns, exchanges, and refunds according to company policy.</li>
+            <li>Helped train new cashiers on procedures and customer interaction.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <h4>Food Service Worker — McDonald's</h4>
+          <div class="meta">Saratoga Springs, UT • May 2023 – Aug 2023</div>
+          <ul>
+            <li>Worked in a fast-paced environment while maintaining food safety standards.</li>
+            <li>Received positive customer feedback for friendly and attentive service.</li>
+            <li>Supported team members during high-pressure rush periods.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <h4>Food Runner — Chubby's Café</h4>
+          <div class="meta">Saratoga Springs, UT • Mar 2021 – Nov 2021</div>
+          <ul>
+            <li>Delivered food promptly and accurately to tables.</li>
+            <li>Communicated with the kitchen to ensure correct orders.</li>
+            <li>Maintained professionalism during high-volume dining periods.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <h4>Private Piano Teacher</h4>
+          <div class="meta">Eagle Mountain, UT • Sep 2019 – Apr 2020</div>
+          <ul>
+            <li>Taught students piano technique, theory, and performance.</li>
+            <li>Adapted lessons to each student's unique learning style.</li>
+            <li>Communicated progress updates to parents.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="card">
+        <h3>Education</h3>
+
+        <div class="job">
+          <h4>Bachelor of Business — Brigham Young University</h4>
+          <div class="meta">Provo, UT • July 2025 – Present</div>
+        </div>
+
+        <div class="job">
+          <h4>Business Information Systems — Utah State University</h4>
+          <div class="meta">Logan, UT • Aug 2022 – Dec 2023</div>
+        </div>
+
+        <div class="job">
+          <h4>High School Diploma — Cedar Valley High School</h4>
+          <div class="meta">Eagle Mountain, UT • Aug 2018 – May 2022</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
+

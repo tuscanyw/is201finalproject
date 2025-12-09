@@ -1,0 +1,52 @@
+/* Background: soft icy blue */
+body {
+    background-color: #94cbf1;
+    font-family: Arial, sans-serif;
+    color: #224564;
+    padding: 20px;
+}
+
+/* Navigation link */
+nav a {
+    font-size: 18px;
+    text-decoration: none;
+    color: #0b3c5d;
+    font-weight: bold;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #104b72;
+}
+
+/* Images */
+img {
+    border: 4px solid #0b3c5d;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Box Styles (for snowboard types) */
+.box {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 12px;
+}
+
+/* Snowboard style color themes */
+.box1 {
+    background-color: #c0daf5;   /* light blue */
+}
+
+.box2 {
+    background-color: #ebc788;   /* soft orange */
+}
+
+.box3 {
+    background-color: #b0eab0;   /* light green */
+}
+
+/* Links */
+a:hover {
+    text-decoration: underline;
+}
